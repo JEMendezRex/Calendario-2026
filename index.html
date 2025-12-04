@@ -10,25 +10,38 @@
   <div class="container">
     <header>
       <h1>Calendario 2026</h1>
-      <div class="month-nav">
-        <button id="prevMonth" aria-label="Mes anterior">‹</button>
-        <div id="monthYear"></div>
-        <button id="nextMonth" aria-label="Mes siguiente">›</button>
+      <div class="controls" aria-label="Controles del calendario">
+        <div class="nav-row">
+          <button id="prevMonth" aria-label="Mes anterior">‹</button>
+          <select id="monthSelect" aria-label="Seleccionar mes"></select>
+          <select id="yearSelect" aria-label="Seleccionar año"></select>
+          <button id="nextMonth" aria-label="Mes siguiente">›</button>
+          <button id="todayBtn" class="small" aria-label="Ir a hoy">Hoy</button>
+          <input id="jumpDate" type="date" aria-label="Ir a fecha" />
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="calendar">
-        <div class="weekdays">
+      <section class="calendar" aria-label="Calendario mensual">
+        <div class="weekdays" role="row">
           <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
         </div>
-        <div id="days" class="days"></div>
+        <div id="days" class="days" role="grid" aria-live="polite"></div>
       </section>
 
-      <aside class="sidebar">
-        <div id="selectedDateTitle">Selecciona una fecha</div>
-        <div id="remindersList" class="reminders-list"></div>
-        <button id="addReminderBtn" class="primary" disabled>Añadir recordatorio</button>
+      <aside class="sidebar" aria-label="Panel de recordatorios">
+        <div class="sidebar-header">
+          <div id="selectedDateTitle">Selecciona una fecha</div>
+          <div id="reminderCount" class="muted">0 recordatorios</div>
+        </div>
+
+        <div id="remindersList" class="reminders-list" aria-live="polite"></div>
+
+        <div class="sidebar-actions">
+          <button id="addReminderBtn" class="primary" disabled>Añadir recordatorio</button>
+          <button id="clearDateBtn" class="danger" disabled>Borrar todos</button>
+        </div>
       </aside>
     </main>
   </div>
@@ -47,6 +60,10 @@
         <label>
           Hora
           <input id="time" type="time" />
+        </label>
+        <label>
+          Color
+          <input id="color" type="color" value="#3b82f6" />
         </label>
         <label>
           Notas
