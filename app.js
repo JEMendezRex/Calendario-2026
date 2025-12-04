@@ -1,4 +1,6 @@
-// Calendar + reminders stored in localStorage with improved UX (month/year selects, jump, color, notifications)
+// Calendar + reminders stored in localStorage with improved UX (mes/año selects, jump, color, notificaciones)
+// Asegúrate de que index.html contiene los ids usados aquí: monthSelect, yearSelect, monthYear, prevMonth, nextMonth, todayBtn, jumpDate, days, etc.
+
 (() => {
   const DAYS_CONTAINER = document.getElementById('days');
   const MONTH_SELECT = document.getElementById('monthSelect');
@@ -25,11 +27,19 @@
   const REMINDER_ID = document.getElementById('reminderId');
   const COLOR = document.getElementById('color');
 
-  let viewDate = new Date(); // month being viewed
+  // Si algún elemento clave no existe, mostramos un error en consola y paramos para evitar fallos silenciosos.
+  const required = {DAYS_CONTAINER, MONTH_SELECT, YEAR_SELECT, MONTH_YEAR, PREV, NEXT, TODAY_BTN, JUMP_DATE, SELECTED_TITLE, REMINDERS_LIST, REMINDER_COUNT, ADD_BTN, CLEAR_BTN, MODAL, CLOSE_MODAL, FORM};
+  for (const [k,v] of Object.entries(required)) {
+    if (!v) {
+      console.error(`Elemento requerido no encontrado en DOM: ${k}`);
+      // No throw para que el error se vea en consola; devuelve early.
+    }
+  }
+
+  let viewDate = new Date(); // mes que se muestra
   let selectedDate = null; // "YYYY-MM-DD"
   const STORAGE_KEY = 'cal_reminders_2026';
 
-  // For in-session notification dedupe: store keys like "YYYY-MM-DD|id|HH:MM"
   const notifiedKeys = new Set();
 
   function formatYMD(d) {
@@ -58,7 +68,7 @@
 
   function getRemindersFor(dateStr) {
     const all = loadReminders();
-    return all[dateStr] ? JSON.parse(JSON.stringify(all[dateStr])) : []; // return copy
+    return all[dateStr] ? JSON.parse(JSON.stringify(all[dateStr])) : [];
   }
 
   function setRemindersFor(dateStr, arr) {
@@ -94,11 +104,9 @@
   }
 
   function populateMonthYearControls() {
-    // Month select
     const monthNames = [];
     for (let i = 0; i < 12; i++) monthNames.push(new Date(2020, i, 1).toLocaleString('es-ES', {month:'long'}));
     MONTH_SELECT.innerHTML = monthNames.map((m, i) => `<option value="${i}">${m}</option>`).join('');
-    // Year select: range ±3 años
     const year = viewDate.getFullYear();
     const start = year - 3;
     YEAR_SELECT.innerHTML = '';
@@ -119,6 +127,7 @@
   }
 
   function renderCalendar() {
+    if (!DAYS_CONTAINER || !MONTH_YEAR) return;
     DAYS_CONTAINER.innerHTML = '';
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
@@ -137,19 +146,17 @@
     for (let i = 0; i < totalCells; i++) {
       const cell = document.createElement('div');
       cell.className = 'day';
-      let dayNumber, cellDate, outside = false;
+      let dayNumber, cellDate;
 
       const idx = i - startDay + 1;
       if (i < startDay) {
         dayNumber = prevLast - (startDay - 1 - i);
         cell.classList.add('outside');
         cellDate = new Date(year, month - 1, dayNumber);
-        outside = true;
       } else if (idx > daysInMonth) {
         dayNumber = idx - daysInMonth;
         cell.classList.add('outside');
         cellDate = new Date(year, month + 1, dayNumber);
-        outside = true;
       } else {
         dayNumber = idx;
         cellDate = new Date(year, month, dayNumber);
@@ -163,10 +170,8 @@
       num.textContent = dayNumber;
       cell.appendChild(num);
 
-      // reminders summary
       const reminders = getRemindersFor(dateStr);
       if (reminders.length > 0) {
-        // show up to 3 colored chips
         reminders.slice(0,3).forEach(r => {
           const chip = document.createElement('span');
           chip.className = 'reminder-chip';
@@ -181,22 +186,17 @@
           badge.textContent = reminders.length;
           cell.appendChild(badge);
         }
-        // set tooltip summarizing reminders
         const tip = reminders.map(r => `${r.time || '--'} • ${r.title}`).join('\n');
         cell.title = `${reminders.length} recordatorio(s)\n${tip}`;
       } else {
         cell.title = `Sin recordatorios`;
       }
 
-      // highlight today
       const today = formatYMD(new Date());
       if (dateStr === today) cell.classList.add('today');
-
-      // highlight selected
       if (selectedDate === dateStr) cell.classList.add('selected');
 
       cell.addEventListener('click', () => {
-        // If clicked an outside day, also jump month
         selectDate(dateStr);
         const cellMonth = cellDate.getMonth();
         if (cellMonth !== viewDate.getMonth()) {
@@ -212,22 +212,22 @@
   function selectDate(dateStr) {
     selectedDate = dateStr;
     const date = parseYMD(dateStr);
-    SELECTED_TITLE.textContent = date.toLocaleDateString('es-ES', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-    ADD_BTN.disabled = false;
-    CLEAR_BTN.disabled = false;
+    if (SELECTED_TITLE) SELECTED_TITLE.textContent = date.toLocaleDateString('es-ES', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+    if (JUMP_DATE) JUMP_DATE.value = dateStr;
+    if (ADD_BTN) ADD_BTN.disabled = false;
+    if (CLEAR_BTN) CLEAR_BTN.disabled = false;
     renderRemindersList();
     renderCalendar();
-    // set jump date value
-    JUMP_DATE.value = dateStr;
   }
 
   function renderRemindersList() {
+    if (!REMINDERS_LIST || !REMINDER_COUNT) return;
     REMINDERS_LIST.innerHTML = '';
     if (!selectedDate) {
       REMINDERS_LIST.innerHTML = '<p class="muted">No hay fecha seleccionada.</p>';
       REMINDER_COUNT.textContent = '0 recordatorios';
-      ADD_BTN.disabled = true;
-      CLEAR_BTN.disabled = true;
+      if (ADD_BTN) ADD_BTN.disabled = true;
+      if (CLEAR_BTN) CLEAR_BTN.disabled = true;
       return;
     }
     const list = getRemindersFor(selectedDate).slice().sort((a,b) => (a.time||'') > (b.time||'') ? 1 : -1);
@@ -304,11 +304,13 @@
   }
 
   function openModal() {
+    if (!MODAL) return;
     MODAL.setAttribute('aria-hidden','false');
     TITLE.focus();
   }
 
   function closeModal() {
+    if (!MODAL) return;
     MODAL.setAttribute('aria-hidden','true');
     FORM.reset();
     REMINDER_ID.value = '';
@@ -399,7 +401,7 @@
     }
   });
 
-  // Notification helpers
+  // Notificaciones
   function requestNotificationPermission() {
     if (!('Notification' in window)) return;
     if (Notification.permission === 'default') {
@@ -418,7 +420,6 @@
   }
 
   function checkDueReminders() {
-    // runs frequently to show notifications for reminders whose time is now
     const now = new Date();
     const ymd = formatYMD(now);
     const reminders = getRemindersFor(ymd);
@@ -440,11 +441,8 @@
   (function init(){
     populateMonthYearControls();
     renderCalendar();
-    // select today by default
     selectDate(formatYMD(new Date()));
-    // request notifications on load (optional)
     requestNotificationPermission();
-    // check every 20 seconds for due reminders
     setInterval(checkDueReminders, 20 * 1000);
   })();
 })();
