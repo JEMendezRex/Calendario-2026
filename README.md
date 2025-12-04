@@ -1,24 +1,25 @@
 ```markdown
-# Calendario 2026 - Recordatorios (simple)
+# Calendario 2026 - Recordatorios (mejorado)
 
-Esta es una pequeña aplicación de calendario que permite:
-- Seleccionar una fecha.
-- Añadir recordatorios con título, hora y notas.
-- Ver, editar y borrar recordatorios.
-- Persistencia local usando localStorage (sin servidor).
+Mejoras incluidas:
+- Selección de mes y año con selects.
+- Botón "Hoy" y entrada de fecha para saltar rápidamente a cualquier día.
+- Visualización compacta de recordatorios en cada casilla del calendario.
+- Badge con el número de recordatorios cuando hay más de 3.
+- Color por recordatorio (selector en el modal).
+- Borrar todos los recordatorios de una fecha.
+- Notificaciones del navegador cuando llegue la hora del recordatorio (requiere permiso y que la pestaña esté abierta).
+- Mejoras de accesibilidad y responsive.
 
 Cómo usar:
-1. Abrir `index.html` en cualquier navegador moderno.
-2. Navega por meses con las flechas.
-3. Haz clic en una fecha para seleccionarla.
-4. Pulsa "Añadir recordatorio" para crear uno para la fecha seleccionada.
-5. Los recordatorios se guardan en localStorage del navegador.
+1. Abre `index.html` en el navegador.
+2. Usa las flechas o los selects para cambiar de mes/año. Usa "Hoy" para volver a la fecha actual.
+3. Haz clic en un día para seleccionarlo. El panel lateral mostrará los recordatorios.
+4. Pulsa "Añadir recordatorio" para crear uno (puedes elegir hora, notas y color).
+5. Si permites notificaciones, recibirás alertas cuando la hora del recordatorio llegue (mientras la pestaña esté abierta).
 
-Posibles mejoras:
-- Sincronización con backend / calendario en la nube (Google Calendar, iCloud).
-- Notificaciones push / recordatorios con alarmas.
-- Soporte multi-usuario y autenticación.
-- Exportar / importar recordatorios (JSON, iCal).
-
-Si quieres que suba estos archivos a tu repositorio `JEMendezRex/Calendario-2026`, dime en qué rama los agrego (por ejemplo `main` o `feature/calendar-ui`) y hago el commit.
+Limitaciones y mejoras posibles:
+- Persistencia local con localStorage: no hay sincronización entre dispositivos.
+- Notificaciones solo funcionan si la página está abierta (no hay service worker).
+- Posibles mejoras: integración con Google Calendar / backend, recordatorios recurrentes, envío de notificaciones push (con service worker), filtros por etiqueta.
 ```
