@@ -33,17 +33,21 @@ h1{margin:0;font-size:1.3rem}
 .controls{display:flex;flex-direction:column;gap:6px}
 .nav-row{display:flex;align-items:center;gap:8px}
 
+.month-year{
+  margin-left:12px;
+  padding:6px 10px;
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+  font-weight:600;
+}
+
 .nav-row select, .nav-row input[type="date"]{
   padding:6px 8px;border-radius:8px;border:1px solid #e5e7eb;background:white;
 }
 
 .nav-row button{padding:6px 8px;border-radius:8px;border:1px solid #e5e7eb;background:white;cursor:pointer}
 .small{background:transparent;border:1px solid #e5e7eb;padding:6px 8px;border-radius:8px;cursor:pointer}
-
-.main{
-  display:flex;
-  gap:18px;
-}
 
 main{
   display:flex;
