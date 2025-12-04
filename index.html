@@ -13,11 +13,17 @@
       <div class="controls" aria-label="Controles del calendario">
         <div class="nav-row">
           <button id="prevMonth" aria-label="Mes anterior">‹</button>
+
+          <!-- Selects de mes/año -->
           <select id="monthSelect" aria-label="Seleccionar mes"></select>
           <select id="yearSelect" aria-label="Seleccionar año"></select>
+
           <button id="nextMonth" aria-label="Mes siguiente">›</button>
           <button id="todayBtn" class="small" aria-label="Ir a hoy">Hoy</button>
           <input id="jumpDate" type="date" aria-label="Ir a fecha" />
+
+          <!-- Elemento que muestra "diciembre de 2025" u otro mes/año -->
+          <div id="monthYear" class="month-year" aria-hidden="true"></div>
         </div>
       </div>
     </header>
