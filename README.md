@@ -1,25 +1,17 @@
 ```markdown
-# Calendario 2026 - Recordatorios (mejorado)
+# Calendario 2026 - Recordatorios (corrección)
 
-Mejoras incluidas:
-- Selección de mes y año con selects.
-- Botón "Hoy" y entrada de fecha para saltar rápidamente a cualquier día.
-- Visualización compacta de recordatorios en cada casilla del calendario.
-- Badge con el número de recordatorios cuando hay más de 3.
-- Color por recordatorio (selector en el modal).
-- Borrar todos los recordatorios de una fecha.
-- Notificaciones del navegador cuando llegue la hora del recordatorio (requiere permiso y que la pestaña esté abierta).
-- Mejoras de accesibilidad y responsive.
+Qué arreglé:
+- Añadí el elemento `div#monthYear` al HTML para mostrar el mes/año — esto evita el error JS que detenía la ejecución y hacía que el calendario no se pintara.
+- Verifiqué que los ids en index.html coincidan con los que usa app.js (monthSelect, yearSelect, prevMonth, nextMonth, todayBtn, jumpDate, days, modal, closeModal, etc.).
+- Mantengo las mejoras solicitadas: selects de mes y año, botón "Hoy", jump date, colores, badge, notificaciones en pestaña.
 
-Cómo usar:
-1. Abre `index.html` en el navegador.
-2. Usa las flechas o los selects para cambiar de mes/año. Usa "Hoy" para volver a la fecha actual.
-3. Haz clic en un día para seleccionarlo. El panel lateral mostrará los recordatorios.
-4. Pulsa "Añadir recordatorio" para crear uno (puedes elegir hora, notas y color).
-5. Si permites notificaciones, recibirás alertas cuando la hora del recordatorio llegue (mientras la pestaña esté abierta).
+Cómo probar:
+1. Reemplaza tus archivos por los anteriores (index.html, style.css, app.js).
+2. Abre `index.html` en tu navegador.
+3. Si no ves el calendario, abre la consola (F12) y pega aquí el mensaje de error exacto para corregirlo.
 
-Limitaciones y mejoras posibles:
-- Persistencia local con localStorage: no hay sincronización entre dispositivos.
-- Notificaciones solo funcionan si la página está abierta (no hay service worker).
-- Posibles mejoras: integración con Google Calendar / backend, recordatorios recurrentes, envío de notificaciones push (con service worker), filtros por etiqueta.
+Siguiente (opcional):
+- Puedo integrarlo en tu repo `JEMendezRex/Calendario-2026` en una rama (ej. `feature/calendar-fix`) y abrir un PR.
+- Si quieres que lo adapte (por ejemplo, eventos recurrentes o sincronización con Google Calendar), dime cuál y lo implemento.
 ```
